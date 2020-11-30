@@ -1,31 +1,35 @@
 // Problem: https://leetcode.com/problems/valid-anagram/
 
+
 class Solution {
-    public boolean wordPattern(String pattern, String s) {
-        String [] words = s.split(" ");
-        if(words.length != pattern.length()){
+    public boolean isAnagram(String s, String t) {
+       HashMap<Character,Integer>map = new HashMap<>(); 
+        if(s.length()!=t.length()){
             return false;
         }
-        
-        HashMap<Character,String>map = new HashMap<>();
-        HashMap<String,Boolean>map1 = new HashMap<>();
-        for(int i = 0 ; i < words.length;i++){
-            char x = pattern.charAt(i);
-            String y = words[i];
+        for(int i=0;i<s.length();i++){
+            char x = s.charAt(i);
             if(map.containsKey(x)){
-                String cc = map.get(x);
-                if(cc.equals(y) == false){
-                    return false;
-                }    
+                int of  = map.get(x);
+                map.put(x,of+1);
             }else{
-                if(map1.containsKey(y)==true){
-                    return false;
-                }else{
-                    map.put(x,y);
-                    map1.put(y,true); 
-                } 
+                map.put(x,1);
             }
         }
-        return true;
+        for(int i=0;i<t.length();i++){
+            char x = t.charAt(i); 
+            if(map.containsKey(x)==false){
+                return false;
+            }else if(map.get(x)==1){
+                map.remove(x);
+            }else{
+                int of  = map.get(x) - 1;
+                map.put(x,of);
+            }
+        }
+        if(map.size()==0){
+            return true;
+        }
+        return false;
     }
 }
